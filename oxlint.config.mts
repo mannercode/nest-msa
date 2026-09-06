@@ -1,3 +1,4 @@
+import { builtinModules } from 'node:module'
 import { resolve } from 'node:path'
 import { defineConfig } from 'oxlint'
 
@@ -5,15 +6,27 @@ const apiDir = resolve(import.meta.dirname, 'apps/api')
 const layers = ['gateway', 'view', 'application', 'core', 'infrastructure']
 const domainLayers = ['application', 'core', 'infrastructure']
 const layerTypes = (layer: string) => [layer, `${layer}-barrel`]
+const nodeBuiltinModules = [
+    ...new Set(builtinModules.map((name) => name.replace(/^node:/, '').split('/')[0]))
+]
+const apiDependencyOptions = {
+    packageDir: apiDir,
+    development: false,
+    ignore: [
+        '^\\.',
+        `^(?:node:)?(?:${nodeBuiltinModules.join('|')})(?:/.*)?$`,
+        `^#(?:${[...layers, 'config'].join('|')})(?:/.*)?$`,
+        '^@mannercode/'
+    ]
+}
 
 export default defineConfig({
     // ESLint에서는 검사했지만 현재 Oxlint 구성으로 대체하지 못한 안전장치다.
     // - TypeScript 7 + oxlint-tsgolint가 필요한 promise 처리, exhaustive switch,
     //   consistent return, 불필요한 조건·타입 단언 등의 타입 기반 검사
-    // - production/dev dependency 구분
     // - enum·테스트 위치 등을 제한하던 범용 AST selector와 Perfectionist식 import/export 정렬
     plugins: ['typescript', 'unicorn', 'oxc'],
-    jsPlugins: ['eslint-plugin-boundaries'],
+    jsPlugins: ['eslint-plugin-boundaries', 'eslint-plugin-allowed-dependencies'],
     categories: { correctness: 'error' },
 
     settings: {
@@ -46,6 +59,25 @@ export default defineConfig({
     env: { node: true },
     ignorePatterns: ['_todo/**', '**/_output/**', '**/.next/**', '**/coverage/**'],
     overrides: [
+        {
+            files: ['apps/api/{src,scripts}/**/*.ts'],
+            rules: { 'allowed-dependencies/dependencies': ['error', apiDependencyOptions] }
+        },
+        {
+            files: ['apps/api/src/**/__tests__/**/*.ts'],
+            // 루트에서 켜면 correctness 분류의 다른 Vitest 규칙까지 활성화된다.
+            plugins: ['typescript', 'unicorn', 'oxc', 'vitest'],
+            rules: {
+                'allowed-dependencies/dependencies': [
+                    'error',
+                    { ...apiDependencyOptions, development: true }
+                ],
+                'vitest/no-focused-tests': 'error',
+                'vitest/no-disabled-tests': 'error',
+                'vitest/valid-expect': 'error',
+                'vitest/no-identical-title': 'error'
+            }
+        },
         {
             files: ['apps/api/src/services/**/*.ts'],
             excludeFiles: ['apps/api/src/**/__tests__/**/*.ts'],
