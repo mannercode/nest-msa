@@ -62,6 +62,9 @@ importers:
       eslint-import-resolver-typescript:
         specifier: 4.4.5
         version: 4.4.5(eslint@10.10.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)
+      eslint-plugin-allowed-dependencies:
+        specifier: 3.1.0
+        version: 3.1.0(eslint@10.10.0(jiti@2.7.0)(supports-color@10.2.2))(oxlint@1.81.0)
       eslint-plugin-boundaries:
         specifier: 7.2.0
         version: 7.2.0(eslint-import-resolver-typescript@4.4.5(eslint@10.10.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint@10.10.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)
@@ -1483,6 +1486,10 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@oxlint/plugins@1.81.0':
+    resolution: {integrity: sha512-HhD8kd3r6XpelZkhxhRty/po8V6yK1VV63Eq4kSsOS2IoHUywG3DV2EX+z/ZHw46aLI74Y6aA604NRiAqLKW9w==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
   '@paralleldrive/cuid2@2.3.1':
     resolution: {integrity: sha512-XO7cAxhnTZl0Yggq6jOgjiOHhbgcO4NqFqwSmQpjK3b6TEE6Uj/jfSk6wzYyemh3+I0sHirKSetjQwn5cZktFw==}
 
@@ -2879,6 +2886,21 @@ packages:
       eslint-import-resolver-webpack:
         optional: true
 
+  eslint-plugin-allowed-dependencies@3.1.0:
+    resolution: {integrity: sha512-2COyhfhAiB86Sx4nU5zWeXkQG6v4iivosCbJw81velgdgGtN88HzBTVeBNU3f12CzADUSnmsBHmIMiMTy6BSgg==}
+    engines: {node: ^22.19.0 || ^24.11.0 || ^26.0.0}
+    peerDependencies:
+      eslint: ^9.0.0 || ^10.0.0
+      oxlint: ^1.76.0
+      typescript-eslint: ^8.0.0
+    peerDependenciesMeta:
+      eslint:
+        optional: true
+      oxlint:
+        optional: true
+      typescript-eslint:
+        optional: true
+
   eslint-plugin-boundaries@7.2.0:
     resolution: {integrity: sha512-ywSaVhn9dBFPxEoUTXnu1106Er+NhSSxTuiz52H+SUgAhd0kmikHHhdavv2d+6Aw7f7w1RDT2cXQUJ/7D/V68A==}
     engines: {node: '>=18.18'}
@@ -4001,6 +4023,9 @@ packages:
   qs@6.15.3:
     resolution: {integrity: sha512-O9gl3zCl5h5blw1KGUzQKhA5oUXSl8rwUIM5o0S3nCXMliSvy5Dzx7/DJcI+SwgICv+IneSZwhBh1oSyEHA71A==}
     engines: {node: '>=0.6'}
+
+  ramda@0.32.0:
+    resolution: {integrity: sha512-GQWAHhxhxWBWA8oIBr1XahFVjQ9Fic6MK9ikijfd4TZHfE2+urfk+irVlR5VOn48uwMgM+loRRBJd6Yjsbc0zQ==}
 
   range-parser@1.3.0:
     resolution: {integrity: sha512-hek2mFQpPuI4E1BBKrSto+BU3e3x4xuarsbiwr3+lf7p44juvFMV0XFWQAP3xUyqXA4RrXLIoaSUGbSt056ZMw==}
@@ -5875,6 +5900,8 @@ snapshots:
   '@oxlint/binding-win32-x64-msvc@1.81.0':
     optional: true
 
+  '@oxlint/plugins@1.81.0': {}
+
   '@paralleldrive/cuid2@2.3.1':
     dependencies:
       '@noble/hashes': 1.8.0
@@ -7165,6 +7192,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  eslint-plugin-allowed-dependencies@3.1.0(eslint@10.10.0(jiti@2.7.0)(supports-color@10.2.2))(oxlint@1.81.0):
+    dependencies:
+      '@oxlint/plugins': 1.81.0
+      ramda: 0.32.0
+    optionalDependencies:
+      eslint: 10.10.0(jiti@2.7.0)(supports-color@10.2.2)
+      oxlint: 1.81.0
+
   eslint-plugin-boundaries@7.2.0(eslint-import-resolver-typescript@4.4.5(eslint@10.10.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint@10.10.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2):
     dependencies:
       '@boundaries/elements': 3.1.1(eslint-import-resolver-typescript@4.4.5(eslint@10.10.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2))(eslint@10.10.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)
@@ -8213,6 +8248,8 @@ snapshots:
     dependencies:
       es-define-property: 1.0.1
       side-channel: 1.1.1
+
+  ramda@0.32.0: {}
 
   range-parser@1.3.0: {}
 
